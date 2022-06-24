@@ -102,3 +102,4 @@ MonoBehaviour:
   whatIsSolid:
     serializedVersion: 2
     m_Bits: 64
+  effects: {fileID: 1719834222172919480, guid: e7364e07c8f6d83439dac45e64029af0, type: 3}

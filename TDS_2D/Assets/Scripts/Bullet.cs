@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour
     public float distance;
     public int damage;
     public LayerMask whatIsSolid;
+    public GameObject effects;
 
     void Start()
     {
@@ -24,6 +25,7 @@ public class Bullet : MonoBehaviour
             {
                 hitInfo.collider.GetComponent<Enemy>().TakeDamage(damage);
             }
+            Instantiate(effects, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         var sc = GameObject.FindGameObjectWithTag("Player");
