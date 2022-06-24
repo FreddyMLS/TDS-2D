@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 moveVelocity;
     private Animator anim;
-    private bool facingRight = true;
+    public bool facingRight = true;
 
     void Start()
     {
