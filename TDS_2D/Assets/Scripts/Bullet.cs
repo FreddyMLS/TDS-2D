@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        
+        Invoke("DestroyBullet", lifetime);
     }
 
     void Update()
@@ -25,12 +25,13 @@ public class Bullet : MonoBehaviour
             {
                 hitInfo.collider.GetComponent<Enemy>().TakeDamage(damage);
             }
-            Instantiate(effects, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            DestroyBullet();
+            
         }
+
         var sc = GameObject.FindGameObjectWithTag("Player");
         Vector3 Scaler = sc.transform.localScale;
-        //автонаведение пушки
+        //чтобы пуля летела правильно
         if (Scaler.x > 1)
         {
             transform.Translate(Vector2.right * speed * Time.deltaTime);
@@ -43,5 +44,11 @@ public class Bullet : MonoBehaviour
             }
         }
         
+    }
+
+    public void DestroyBullet()
+    {
+        Instantiate(effects, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

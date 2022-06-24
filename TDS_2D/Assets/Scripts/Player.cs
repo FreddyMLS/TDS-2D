@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private Vector2 moveVelocity;
     private Animator anim;
     public bool facingRight = true;
+    public int health;
 
     void Start()
     {
@@ -55,5 +56,10 @@ public class Player : MonoBehaviour
         Vector3 Scaler = transform.localScale;
         Scaler.x *= -1;
         transform.localScale = Scaler;
+    }
+
+    public void ChangeHealth(int healthValue)
+    {
+        health += healthValue;
     }
 }
