@@ -4,26 +4,35 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    public GunType gunType;
     public float offset=0;
     public GameObject bullet;
     public Transform shotPoint;
     public Joystick joystick;
+    private GameObject sc;
+    private GameObject rotate_gun;
 
     private float timeBtwShots;
     public float staetTimeBtwShots;
 
+    public enum GunType {Default, Enemy}
+
     void Start()
     {
-
+        sc = GameObject.FindGameObjectWithTag("Player");
+        
     }
 
     
     void Update()
     {
-        var sc = GameObject.FindGameObjectWithTag("Player");
+        
         Vector3 Scaler = sc.transform.localScale;
-        Vector3 pos = sc.transform.position;
 
+        if (gunType == GunType.Default)
+        {
+
+        }
         //автонаведение пушки
         if (Scaler.x>1)
         {
@@ -37,16 +46,33 @@ public class Gun : MonoBehaviour
             }
         }
         var enemyObject = GameObject.FindWithTag("Enemy");
-        var dir = enemyObject.transform.position - transform.position;
-        float rotz = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(rotz+offset, Vector3.forward);
-
-
-
+        if (gunType == GunType.Default)
+        {
+            if (enemyObject != null)
+            {
+                var dir = enemyObject.transform.position - transform.position;
+                float rotz = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.AngleAxis(rotz + offset, Vector3.forward);
+            }
+        }
+        else if(gunType == GunType.Enemy)
+        {
+            var dir = sc.transform.position - transform.position;
+            float rotz = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(rotz-90, Vector3.forward);
+        }
+        
+        
+        
         //Стрельба
         if (timeBtwShots <= 0)
         {
-            if (joystick.Horizontal == 0 && joystick.Vertical == 0)
+            if (joystick.Horizontal == 0 && joystick.Vertical == 0 && enemyObject!=null)
+            {
+                Shoot();
+            }
+
+            if (gunType == GunType.Enemy)
             {
                 Shoot();
             }
@@ -57,10 +83,11 @@ public class Gun : MonoBehaviour
 
         }
         
+        
     }
     void Shoot()
     {
-        Instantiate(bullet, shotPoint.position, transform.rotation);
+        Instantiate(bullet, shotPoint.position, shotPoint.rotation);
         timeBtwShots = staetTimeBtwShots;
     }
 }

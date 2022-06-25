@@ -13,10 +13,12 @@ public class Enemy : MonoBehaviour
     private float stopTime;
     public float startStopTime;
     public float normalSpeed;
+    public bool facingRight = true;
 
     private Player player;
     private Animator anim;
-
+    private Gun point;
+    private GameObject points;
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -42,19 +44,32 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (player.transform.position.x > transform.position.x)
+        if (player.transform.position.x > transform.position.x && !facingRight)
         {
-            transform.eulerAngles = new Vector3(0, 0, 0);
+            Flip();
         }
-        else
+        else if(player.transform.position.x < transform.position.x && facingRight)
         {
-            transform.eulerAngles = new Vector3(0, 180, 0);
+            Flip();
         }
+
+
+        
+
 
         transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
-
         anim.SetBool("InRunning(MS)", true);
     }
+
+    private void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 Scaler = transform.localScale;
+        Scaler.x *= -1;
+        transform.localScale = Scaler;
+    }
+
+
 
     public void TakeDamage(int damage)
     {
@@ -67,7 +82,9 @@ public class Enemy : MonoBehaviour
         {
             if (timeBtwAttack <= 0)
             {
+                OnEnemyAttack();
                 anim.SetTrigger("attack_sword");
+                anim.SetBool("InRunning(MS)", true);
             }
             else
             {
