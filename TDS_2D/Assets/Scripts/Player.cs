@@ -26,6 +26,14 @@ public class Player : MonoBehaviour
     private bool addKey = false;
     public GameObject key;
 
+    [Header("FINISH")]
+    public GameObject pouseIcon;
+    public GameObject winner;
+
+    [Header("LOSE")]
+    public GameObject lose;
+    public GameObject HP_Dis;
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private Vector2 moveVelocity;
@@ -66,7 +74,13 @@ public class Player : MonoBehaviour
             key.SetActive(true);
         }
 
-
+        if (health <= 0)
+        {
+            Time.timeScale = 0f;
+            lose.SetActive(true);
+            pouseIcon.SetActive(false);
+            HP_Dis.SetActive(false);
+        }
     }
 
     private void FixedUpdate()
@@ -115,7 +129,12 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject);
             addKey = !addKey;
         }
-
+        else if (other.CompareTag("Fin"))
+        {
+            pouseIcon.SetActive(false);
+            Time.timeScale = 0f;
+            winner.SetActive(true);
+        }
 
     }
 
