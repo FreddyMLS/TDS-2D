@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public int health;
     public Text healhDisplay;
     public GameObject Botll_Ef;
-    
+
     [Header("Shield")]
     public GameObject shield;
     public Shield shieldTimer;
@@ -45,11 +45,11 @@ public class Player : MonoBehaviour
             anim.SetBool("inRunning", true); // Анимация бега
         }
 
-        if(!facingRight && moveInput.x > 0)
+        if (!facingRight && moveInput.x > 0)
         {
             Flip();
         }
-        else if(facingRight && moveInput.x < 0)
+        else if (facingRight && moveInput.x < 0)
         {
             Flip();
         }
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
                 Instantiate(Shield_Ef, other.transform.position, Quaternion.identity);
                 Destroy(other.gameObject);
             }
-            
+
         }
     }
 
@@ -104,7 +104,7 @@ public class Player : MonoBehaviour
             health += healthValue;
             healhDisplay.text = "HP: " + health;
         }
-        else if(shield.activeInHierarchy && healthValue < 0)
+        else if (shield.activeInHierarchy && healthValue < 0)
         {
             shieldTimer.ReduceTime(healthValue);
         }
