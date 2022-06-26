@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     public float startStopTime;
     public float normalSpeed;
     public bool facingRight = true;
+    public float attackRadiusAN = 10;
 
     private Player player;
     private Animator anim;
@@ -33,11 +34,14 @@ public class Enemy : MonoBehaviour
         if (stopTime <= 0)
         {
             speed = normalSpeed;
+            anim.SetBool("InRunning(MS)", true);
         }
         else
         {
             speed = 0;
             stopTime -= Time.deltaTime;
+            anim.SetBool("InRunning(MS)", false);
+
         }
 
 
@@ -45,6 +49,8 @@ public class Enemy : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+
 
         if (player.transform.position.x > transform.position.x && !facingRight)
         {
@@ -55,12 +61,16 @@ public class Enemy : MonoBehaviour
             Flip();
         }
 
-
-        
-
-
-        transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
-        anim.SetBool("InRunning(MS)", true);
+        Vector2 enDis = player.transform.position;
+        if (Vector2.Distance(transform.localPosition, player.transform.localPosition) <= attackRadiusAN)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+            anim.SetBool("InRunning(MS)", true);
+        }
+        else
+        {
+            anim.SetBool("InRunning(MS)",false);
+        }
     }
 
     private void Flip()
@@ -77,7 +87,7 @@ public class Enemy : MonoBehaviour
     {
         stopTime = startStopTime;
         health -= damage;
-        Vector2 damagePos = new Vector2(transform.position.x, transform.position.y + 2.75f);
+        Vector2 damagePos = new Vector2(transform.position.x, transform.position.y + 1.5f);
         Instantiate(floatingDamage, damagePos, Quaternion.identity);
         floatingDamage.GetComponentInChildren<FloatingDamage>().damage = damage;
     }

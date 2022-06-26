@@ -11,16 +11,17 @@ public class Gun : MonoBehaviour
     public Joystick joystick;
     private GameObject sc;
     private GameObject rotate_gun;
+    public float attackRadius;
 
     private float timeBtwShots;
     public float staetTimeBtwShots;
+    private Vector2 enDis;
 
     public enum GunType {Default, Enemy}
 
     void Start()
     {
         sc = GameObject.FindGameObjectWithTag("Player");
-        
     }
 
     
@@ -43,10 +44,19 @@ public class Gun : MonoBehaviour
             }
         }
         var enemyObject = GameObject.FindWithTag("Enemy");
+        if (enemyObject != null)
+        {
+            enDis = enemyObject.transform.position;
+        }
+        
+        var sc1 = GameObject.FindWithTag("Player");
+        Vector2 plDis = sc1.transform.position;
         if (gunType == GunType.Default)
         {
-            if (enemyObject != null)
+            
+            if (enemyObject != null && Vector2.Distance(transform.position, enDis) <= attackRadius)
             {
+                
                 var dir = enemyObject.transform.position - transform.position;
                 float rotz = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.AngleAxis(rotz + offset, Vector3.forward);
@@ -64,7 +74,7 @@ public class Gun : MonoBehaviour
         //Стрельба
         if (timeBtwShots <= 0)
         {
-            if (joystick.Horizontal == 0 && joystick.Vertical == 0 && enemyObject!=null)
+            if (joystick.Horizontal == 0 && joystick.Vertical == 0 && enemyObject!=null && Vector2.Distance(transform.position, enDis) <= attackRadius)
             {
                 Shoot();
             }
@@ -77,7 +87,6 @@ public class Gun : MonoBehaviour
         else
         {
             timeBtwShots -= Time.deltaTime;
-
         }
         
         
