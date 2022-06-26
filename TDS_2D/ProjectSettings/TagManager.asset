@@ -9,6 +9,11 @@ TagManager:
   - Botlle
   - Shield
   - text
+  - Block
+  - Door
+  - Door(R)
+  - DoorKay
+  - Key
   layers:
   - Default
   - TransparentFX
@@ -19,7 +24,7 @@ TagManager:
   - Solder
   - Enemy
   - Player
-  - 
+  - graund
   - 
   - 
   - 

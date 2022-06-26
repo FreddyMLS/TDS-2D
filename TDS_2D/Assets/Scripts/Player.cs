@@ -20,6 +20,12 @@ public class Player : MonoBehaviour
     public Shield shieldTimer;
     public GameObject Shield_Ef;
 
+    [Header("Key")]
+    public GameObject keyIcon;
+    public GameObject doorKeyEf;
+    private bool addKey = false;
+    public GameObject key;
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private Vector2 moveVelocity;
@@ -53,6 +59,13 @@ public class Player : MonoBehaviour
         {
             Flip();
         }
+
+        var enemyObject = GameObject.FindWithTag("Enemy");
+        if (enemyObject == null && key!=null)
+        {
+            key.SetActive(true);
+        }
+
 
     }
 
@@ -93,8 +106,29 @@ public class Player : MonoBehaviour
                 Instantiate(Shield_Ef, other.transform.position, Quaternion.identity);
                 Destroy(other.gameObject);
             }
+        
 
         }
+        else if (other.CompareTag("Key"))
+        {
+            keyIcon.SetActive(true);
+            Destroy(other.gameObject);
+            addKey = !addKey;
+        }
+
+
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("DoorKay") && addKey == true)
+        {
+            Instantiate(doorKeyEf, other.transform.position, Quaternion.identity);
+            keyIcon.SetActive(false);
+            other.gameObject.SetActive(false);
+            //Destroy(other.gameObject);
+        }
+
     }
 
     public void ChangeHealth(int healthValue)
