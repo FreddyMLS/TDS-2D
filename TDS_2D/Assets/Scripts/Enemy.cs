@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public GameObject floatingDamage;
+
     private float timeBtwAttack;
     public float startTimeBtwAttack;
 
@@ -75,6 +77,9 @@ public class Enemy : MonoBehaviour
     {
         stopTime = startStopTime;
         health -= damage;
+        Vector2 damagePos = new Vector2(transform.position.x, transform.position.y + 2.75f);
+        Instantiate(floatingDamage, damagePos, Quaternion.identity);
+        floatingDamage.GetComponentInChildren<FloatingDamage>().damage = damage;
     }
     public void OnTriggerStay2D(Collider2D other)
     {

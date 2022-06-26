@@ -29,10 +29,7 @@ public class Gun : MonoBehaviour
         
         Vector3 Scaler = sc.transform.localScale;
 
-        if (gunType == GunType.Default)
-        {
-
-        }
+       
         //автонаведение пушки
         if (Scaler.x>1)
         {

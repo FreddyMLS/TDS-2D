@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Enemy
   - Bull
+  - Botlle
+  - Shield
+  - text
   layers:
   - Default
   - TransparentFX
